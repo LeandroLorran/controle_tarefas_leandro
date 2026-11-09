@@ -3,7 +3,7 @@ const tarefas = [];
 
 import { LeiaTexto, LeiaNumero } from "./entrada.js";
 
-function cadastrarTarefas(){
+function cadastrarTarefa(){
     const tarefa = LeiaTexto("Informe a tarefa que deseja cadastratar: ");
     const responsavel = LeiaNumero("Informe o responsavel pela tarefa: ");
     const prioridade = LeiaNumero("Informe a prioridade da tarefa: ");
@@ -23,13 +23,13 @@ function cadastrarTarefas(){
     const continuar = LeiaTexto("Deseja cadastrar outra tarefa? (S/N) ").toLowerCase();
 
     if (continuar === "s"){
-        cadastrarTarefas();
+        cadastrarTarefa();
     }
 
 }
 
 
-function exibirTarefas(listaTarefas){
+function listarTarefas(listaTarefas){
 
     if (listaTarefas.lenght === 0){
         console.log("Nenhuma tarefa cadastrada");
@@ -49,7 +49,7 @@ function exibirTarefas(listaTarefas){
 
 }
 
-function alterarStatus(listaTarefas){
+function AtualizarStatus(listaTarefas){
     if (listaTarefas.lenght === 0){
         console.log("Nenhuma tarefa cadastrada!!");
         return;
@@ -93,9 +93,9 @@ function alterarStatus(listaTarefas){
 
 
 module.exports = {
-    cadastrarTarefas,
-    exibirTarefas,
-    alterarStatus,
+    cadastrarTarefa,
+    listarTarefas,
+    AtualizarStatus,
     tarefas
 };
 
