@@ -1,0 +1,8 @@
+{
+ "name": "controle-tarefas",
+ "version": "1.0.0",
+ "type": "module",
+ "dependencies": {
+  "readline-sync": "^1.4.10"
+ }
+}
