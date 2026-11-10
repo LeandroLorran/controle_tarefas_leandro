@@ -1,123 +1,129 @@
 
-const tarefas = [];
-
 import { LeiaTexto, LeiaNumero } from "./entrada.js";
 
-function cadastrarTarefa(){
-    const tarefa = LeiaTexto("Informe a tarefa que deseja cadastratar: ");
-    const responsavel = LeiaNumero("Informe o responsavel pela tarefa: ");
-    const prioridade = LeiaNumero("Informe a prioridade da tarefa: ");
+export const tarefas = [];
 
-    const id = tarefas.length === 0
-       ? 1
-       : Math.max(tarefas.map(tarefa => tarefa.id)) + 1;
-    
+export function cadastrarTarefa() {
+    let continuar;
 
-    const tarefaObj = {
-        id,
-        tarefa,
-        responsavel,
-        prioridade,
-        status: "Pendente"
-    }
+    do {
+        const tarefa = LeiaTexto("Informe a tarefa: ");
+        const responsavel = LeiaTexto("Informe o responsável: ");
+        const prioridade = LeiaNumero("Informe a prioridade (1 a 3): ");
 
-    tarefas.push(tarefaObj);
+        const id = tarefas.length === 0
+            ? 1
+            : Math.max(...tarefas.map(t => t.id)) + 1;
 
-    console.log("Tarefa cadastrada com sucesso!");
+        const tarefaObj = {
+            id,
+            tarefa,
+            responsavel,
+            prioridade,
+            status: "Pendente"
+        };
 
-    const continuar = LeiaTexto("Deseja cadastrar outra tarefa? (S/N) ").toLowerCase();
+        tarefas.push(tarefaObj);
 
-    if (continuar === "s"){
-        cadastrarTarefa();
-    }
+        console.log("\nTarefa cadastrada com sucesso!");
 
+        continuar = LeiaTexto(
+            "Deseja cadastrar outra tarefa? (S/N): "
+        ).toLowerCase();
+
+    } while (continuar === "s");
 }
 
 
-function listarTarefas(listaTarefas){
+export function listarTarefas(listaTarefas = tarefas) {
 
-    if (listaTarefas.lenght === 0){
-        console.log("Nenhuma tarefa cadastrada");
-
+    if (listaTarefas.length === 0) {
+        console.log("\nNenhuma tarefa cadastrada!");
         return;
     }
 
+    console.log("\n======== LISTA DE TAREFAS ========");
 
-    console.log("Lista de Tarefas Cadastradas: ");
-    listaTarefas.forEach((tarefas, index) =>{
-        console.log(`Tarefa ${index + 1}: ${tarefas.tarefa}`);
-        console.log(`Responsavel: ${tarefas.responsavel}`);
-        console.log(`Prioridade: ${tarefas.prioridade}`);
-        console.log(`Status: ${tarefas.status}`);
-    })
-
-
+    listaTarefas.forEach((tarefa) => {
+        console.log(`\nID: ${tarefa.id}`);
+        console.log(`Tarefa: ${tarefa.tarefa}`);
+        console.log(`Responsável: ${tarefa.responsavel}`);
+        console.log(`Prioridade: ${tarefa.prioridade}`);
+        console.log(`Status: ${tarefa.status}`);
+        console.log("----------------------------------");
+    });
 }
 
-function buscarTarefas(){
-    const tarefaEncontrada = tarefas.find((tarefas) =>{
-        return tarefas.id === id;
+
+export function buscarTarefaPorId(id) {
+
+    const tarefaEncontrada = tarefas.find((tarefa) => {
+        return tarefa.id === id;
     });
 
-    if (tarefaEncontrada){
-        return tarefaEncontrada;
-    } else{
-        return null;
-    }
+    return tarefaEncontrada || null;
 }
 
-function AtualizarStatus(listaTarefas){
-    if (listaTarefas.lenght === 0){
-        console.log("Nenhuma tarefa cadastrada!!");
+
+
+export function atualizarStatus() {
+
+    if (tarefas.length === 0) {
+        console.log("\nNenhuma tarefa cadastrada!");
         return;
     }
 
-    exibirTarefas(listaTarefas);
+    listarTarefas();
 
-    const numeroTarefas = LeiaNumero("\nInforme o numero da tarefa que deseja alterar: ");
+    const id = LeiaNumero("\nInforme o ID da tarefa que deseja alterar: ");
 
-    if (numeroTarefas < 1 || numeroTarefas > listaTarefas.lenght){
-        console.log("Numero de tarefa invalido!");
+    const tarefaSelecionada = buscarTarefaPorId(id);
+
+    if (!tarefaSelecionada) {
+        console.log("\nTarefa não encontrada!");
         return;
     }
-
-    const tarefaSelecionada = listaTarefas[numeroTarefas - 1];
 
     console.log("\n======== ALTERAR STATUS ========");
     console.log("1 - Pendente");
     console.log("2 - Em andamento");
-    console.log("3 - Concluida");
-    
+    console.log("3 - Concluída");
+
     const opcao = LeiaNumero("Escolha o novo status: ");
 
-    switch (opcao){
-        case 1 :
+    switch (opcao) {
+        case 1:
             tarefaSelecionada.status = "Pendente";
-            break
+            break;
+
         case 2:
-            tarefaSelecionada.status = "Em andamento"
+            tarefaSelecionada.status = "Em andamento";
             break;
+
         case 3:
-            tarefaSelecionada.status = "Concluida"
+            tarefaSelecionada.status = "Concluída";
             break;
+
         default:
-            console.log("Opcao invalida!");
+            console.log("\nOpção inválida!");
             return;
     }
 
-
+    console.log("\nStatus atualizado com sucesso!");
 }
 
 
 
+export function listarPorStatus(status) {
 
-module.exports = {
-    cadastrarTarefa,
-    listarTarefas,
-    AtualizarStatus,
-    buscarTarefas,
-    tarefas
-};
+    const tarefasFiltradas = tarefas.filter((tarefa) => {
+        return tarefa.status.toLowerCase() === status.toLowerCase();
+    });
 
+    if (tarefasFiltradas.length === 0) {
+        console.log("\nNenhuma tarefa encontrada com esse status!");
+        return;
+    }
 
-
+    listarTarefas(tarefasFiltradas);
+}

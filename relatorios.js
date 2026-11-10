@@ -22,7 +22,7 @@ export function RelatorioGeral(array) {
   console.log("Quantidade de tarefas concluídas:", tarefasConcluido);
 }
 
-export function relatorioPrioridades(array) {
+export function RelatorioPrioridades(array) {
   let PB = 0;
   let PM = 0;
   let PA = 0;
@@ -43,7 +43,7 @@ export function relatorioPrioridades(array) {
   console.log("Tarefas com alta prioridade:", PA);
 }
 
-export function relatorioResponsaveis(array) {
+export function RelatorioResponsaveis(array) {
   console.log("========= RELATÓRIO RESPONSÁVEIS =========");
 
   for (let i = 0; i < array.length; i++) {
