@@ -7,9 +7,14 @@ function cadastrarTarefa(){
     const tarefa = LeiaTexto("Informe a tarefa que deseja cadastratar: ");
     const responsavel = LeiaNumero("Informe o responsavel pela tarefa: ");
     const prioridade = LeiaNumero("Informe a prioridade da tarefa: ");
+
+    const id = tarefas.length === 0
+       ? 1
+       : Math.max(tarefas.map(tarefa => tarefa.id)) + 1;
     
 
     const tarefaObj = {
+        id,
         tarefa,
         responsavel,
         prioridade,
@@ -47,6 +52,18 @@ function listarTarefas(listaTarefas){
     })
 
 
+}
+
+function buscarTarefas(){
+    const tarefaEncontrada = tarefas.find((tarefas) =>{
+        return tarefas.id === id;
+    });
+
+    if (tarefaEncontrada){
+        return tarefaEncontrada;
+    } else{
+        return null;
+    }
 }
 
 function AtualizarStatus(listaTarefas){
@@ -92,10 +109,13 @@ function AtualizarStatus(listaTarefas){
 }
 
 
+
+
 module.exports = {
     cadastrarTarefa,
     listarTarefas,
     AtualizarStatus,
+    buscarTarefas,
     tarefas
 };
 
